@@ -31,7 +31,7 @@ function App() {
   const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
-    async function fetchGifs(name: string) {
+    async function fetchGifs(name: string):Promise<Image | undefined> {
       try {
         const response = await fetch(
           "https://api.giphy.com/v1/gifs/translate?api_key=9UlZ2waaRImI4fmUG97zEKDfGoEx5oCZ&s=" +
@@ -46,7 +46,8 @@ function App() {
     setImages([]);
     let pokemon = ["Pikachu", "Charizard", "Blastoise", "Alakazam", "Gengar", "Machamp", "Jolteon", "Dragonite", "Gyarados", "Snorlax"]
     Promise.all(pokemon.map((card) => fetchGifs(card))).then((img) => {
-      setImages(img.filter((image) =>  images.includes(image) === false));
+      const newImages = img.filter((image): image is Image =>  image !== undefined)
+      setImages(newImages);
     });
   }, []);
   const [cacheCards, setCacheCards] = useState<string[]>([]);
