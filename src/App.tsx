@@ -4,27 +4,31 @@ import "./App.css";
 import useLocalStorageState from "./useLocalStorageState"
 
 function App() {
-  const [cards, setCards] = useState([]);
-  useEffect(() => {
-    async function fetchCards() {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=7&offset=0"
-        );
-        const data = await response.json();
-        setCards(
-          data.results.map((card: any) => {
-            return card.name;
-          })
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchCards();
-    console.log(cards);
-  }, []);
-  const [images, setImages] = useState([]);
+  // const [cards, setCards] = useState([]);
+  // useEffect(() => {
+  //   async function fetchCards() {
+  //     try {
+  //       const response = await fetch(
+  //         "https://pokeapi.co/api/v2/pokemon?limit=7&offset=0"
+  //       );
+  //       const data = await response.json();
+  //       setCards(
+  //         data.results.map((card: any) => {
+  //           return card.name;
+  //         })
+  //       );
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchCards();
+  //   console.log(cards);
+  // }, []);
+  interface Image {
+    url: string;
+    name: string;
+  }
+  const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
     async function fetchGifs(name: string) {
@@ -42,11 +46,10 @@ function App() {
     setImages([]);
     let pokemon = ["Pikachu", "Charizard", "Blastoise", "Alakazam", "Gengar", "Machamp", "Jolteon", "Dragonite", "Gyarados", "Snorlax"]
     Promise.all(pokemon.map((card) => fetchGifs(card))).then((img) => {
-      setImages(img.filter((image) => image.url !== ""));
+      setImages(img.filter((image) =>  images.includes(image) === false));
     });
   }, []);
-  console.log("firstimages", images);
-  const [cacheCards, setCacheCards] = useState([]);
+  const [cacheCards, setCacheCards] = useState<string[]>([]);
   const [score, SetScore] = useState(0);
   const [Highest, setHighest] = useLocalStorageState("Highest", 0);
 
@@ -61,7 +64,6 @@ function App() {
     setImages(shuffleCards);
   }
   function handleSetCacheCards(card: string) {
-    console.log(card);
     if (cacheCards.includes(card)) {
       alert("You lose");
       setCacheCards([]);
@@ -77,7 +79,7 @@ function App() {
     if (score > Highest) {
       setHighest(score);
     }
-  }, [score, Highest]); // 依赖列表中包括 score 和 highest
+  }, [score, Highest]); 
 
   return (
     <div>
@@ -91,7 +93,6 @@ function App() {
         {images.map((image, index) => {
           return (
             <div key={index} className="Card">
-              {/* <p>{image.name}</p> */}
               <img
                 src={image.url}
                 onClick={() => {
