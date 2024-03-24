@@ -1,0 +1,67 @@
+/* App.css */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+header {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 2rem;
+}
+
+.Score {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  background-color: #ddd;
+  margin-bottom: 1rem;
+}
+
+.Score p {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.Cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.Card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.Card img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .Score {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Score p {
+    margin-bottom: 0.5rem;
+  }
+}
